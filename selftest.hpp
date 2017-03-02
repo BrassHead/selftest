@@ -208,7 +208,7 @@ TEST_FUNCTION( error_handler_testing )
 
     #ifdef OBFUSCATETESTS
         #define ASSERT( X ) {if(!(X)) \
-            {selftest::thrower<0>( selftest::failType::badassert, 0, 0, 0, 0 );} }
+            {selftest::thrower<0>(selftest::failType::badassert, 0, 0, 0, 0);}}
     #else
         #define ASSERT( X ) {if(!(X)) \
             {selftest::thrower<0>( selftest::failType::badassert, \

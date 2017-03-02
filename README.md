@@ -13,5 +13,5 @@ This project also contains a unit test ["testception"](test/testception.cpp)
 and a basic Makefile for running the tests and demo program in *nix 
 environments.
 
-This software is made available under the [MIT License](LICENSE).
+This software is made available under the [MIT License](LICENSE-MIT.txt).
 
