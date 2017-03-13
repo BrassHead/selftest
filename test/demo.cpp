@@ -56,7 +56,7 @@ TEST_FUNCTION( BuzzTests )
 {
     CHECKIF( "Buzz" == fizzbuzz( 55 ) );
     CHECKIF( "Fizz Buzz" == fizzbuzz( 90 ) );
-    // uncomment below to see what happens with an error
+    // uncomment below to see what happens with a failed test
     // CHECKIF( "99" == fizzbuzz( 99 ) );
 }
 

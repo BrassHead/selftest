@@ -94,10 +94,6 @@ For use in a debugger, set a breakpoint on the function
     selftest::thrower<0>() 
 to catch all these errors as they happen and before throwing.
 
-Options before #include "selftest.hpp"
-    $define TRACETHROWS
-        Will print messages to cerr prior to the throw
-
 
 Using Unit Test macros
 ----------------------
@@ -324,17 +320,7 @@ void thrower<0>(
     const char* function,
     const char* fileName,
     int lineNum )
-{
-    #ifdef DEBUG
-        #ifdef TRACETHROWS
-            const bool debugging = true;
-        #else
-            const bool debugging = false;
-        #endif
-    #else
-        const bool debugging = false;    
-    #endif
-    
+{    
     /* Compose message texts:
     <file>:<line>:0: error: <ft text> '<failedPredicate>' failed in <function>.
     */
@@ -370,15 +356,9 @@ void thrower<0>(
 
     switch (ft) {
     case failType::badarg:
-        if ( debugging ) {
-            std::cerr << message << std::endl;
-        }
         throw std::invalid_argument(message);
         break;
     case failType::badassert:
-        if ( debugging ) {
-            std::cerr << message << std::endl;
-        }
         throw selftest::selftest_error(message);
         break;
     case failType::badselftest:
@@ -389,9 +369,6 @@ void thrower<0>(
         throw terminate_unittest();
         break;
     case failType::overlimit:
-        if ( debugging ) {
-            std::cerr << message << std::endl;
-        }
         throw selftest::over_reasonable_limit(message);
         break;
     }
