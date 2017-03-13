@@ -28,15 +28,15 @@ Selftest unit testing
 =====================
 
 These are several related facilities here:
-	selftest::trace A 'trace' debug ostream that can be selectively activated
-	ASSERT          Self testing that can be disabled for performance
-	BAD_ARG()...    Macro's for throwing exceptions that are debugger
+    selftest::trace A 'trace' debug ostream that can be selectively activated
+    ASSERT          Self testing that can be disabled for performance
+    BAD_ARG()...    Macro's for throwing exceptions that are debugger
                     friendly and provide extra context.
-	TEST_FUNCTION( function )
-            		Registers and defines a unit test function.
+    TEST_FUNCTION( function )
+                    Registers and defines a unit test function.
                     The unit test function uses the following two
                     macros to verify results.
-	CHECKIF( predicate )
+    CHECKIF( predicate )
                     Tests that predicate is true
     CHECKIFTHROWS( expr, except )
                     Checks that expression 'expr' throws an expected exception.
@@ -55,9 +55,9 @@ To use it:
     selftest::trace << "I'm here, let the bells ring and the banners fly\n";
 
 Options before #include "selftest.hpp"
-	#define TRACING 1		<-- trace is std::cerr
-	#define TRACING 0		<-- trace output is discarded
-	TRACING not #defined    <-- trace not defined
+    #define TRACING 1		<-- trace is std::cerr
+    #define TRACING 0		<-- trace output is discarded
+    TRACING not #defined    <-- trace not defined
 
 
 
@@ -69,12 +69,12 @@ set a breakpoint that traps all asserts before the call stack is gone)
 
 To use it:
     #include "selftest.hpp"
-	ASSERT( predicate );        // Throws if predicate is false
-	IFASSERTING( statement );   // Evaluates statement if ASSERTS are enabled
+    ASSERT( predicate );        // Throws if predicate is false
+    IFASSERTING( statement );   // Evaluates statement if ASSERTS are enabled
 
 The preprocessor options for assert are:
-	#define GOFASTERSTRIPE  <-- ASSERT disabled to save execution time
-	#define OBFUSCATETESTS  <-- Messages without details to save space
+    #define GOFASTERSTRIPE  <-- ASSERT disabled to save execution time
+    #define OBFUSCATETESTS  <-- Messages without details to save space
 
 
 Using THROW macros
@@ -83,30 +83,30 @@ Using THROW macros
 Self test support macros:
 
     #include "selftest.hpp"
-	BAD_ARG( message )
-		Throws std::invalid_argument
-	TEST_FAIL( message )
-		Throws selftest::selftest_error
-	OVER_LIMIT( message )
-		Throws selftest::over_reasonable_limit
+    BAD_ARG( message )
+        Throws std::invalid_argument
+    TEST_FAIL( message )
+        Throws selftest::selftest_error
+    OVER_LIMIT( message )
+        Throws selftest::over_reasonable_limit
 
 For use in a debugger, set a breakpoint on the function 
     selftest::thrower<0>() 
 to catch all these errors as they happen and before throwing.
 
 Options before #include "selftest.hpp"
-	$define TRACETHROWS
-		Will print messages to cerr prior to the throw
+    $define TRACETHROWS
+        Will print messages to cerr prior to the throw
 
 
 Using Unit Test macros
 ----------------------
 
 In unit test source files:
-	TEST_FUNCTION( function )
-            		Registers and defines a unit test function.
-	CHECKIF( predicate )
-		            Prints a message on std::cerr if predicate is false.
+    TEST_FUNCTION( function )
+                    Registers and defines a unit test function.
+    CHECKIF( predicate )
+                    Prints a message on std::cerr if predicate is false.
     CHECKIFTHROWS( stmt, except )
                     Test fails if stmt does not throw expected exception type
 
@@ -120,11 +120,11 @@ CHECKIF()'s. Each routine is defined by the macro TEST_FUNCTION(function). For
 example:
 
     #include "selftest.hpp"
-	TEST_FUNCTION( check_sqrt )
-	{
-		CHECKIF( sqrt(4)==2 );
-		CHECKIF( sqrt(100)==10 );
-	}
+    TEST_FUNCTION( check_sqrt )
+    {
+        CHECKIF( sqrt(4)==2 );
+        CHECKIF( sqrt(100)==10 );
+    }
 
 Unit test routines will be executed in the order of appearance in the source.
 Both the name of the test function and the text of the CHECKIF will be visible
@@ -138,8 +138,8 @@ file main.cc
 int main()
 {
     #ifdef DEBUG
-	    auto fails = selftest::run_unit_tests<0>();
-    	trace << fails.numFailedTest << "/" << fails.numTests << " unit tests failed\n";
+        auto fails = selftest::run_unit_tests<0>();
+        trace << fails.numFailedTest << "/" << fails.numTests << " unit tests failed\n";
     #endif
 }
 
@@ -147,15 +147,15 @@ int main()
 
 TEST_FUNCTION( test_sqrt )
 {
-	float foo;
-	CHECKIF( sqrt(foo)==2. );
-	CHECKIF( isnan(sqrt(-foo)) );
+    float foo;
+    CHECKIF( sqrt(foo)==2. );
+    CHECKIF( isnan(sqrt(-foo)) );
 }
 
 TEST_FUNCTION( error_handler_testing )
 {
     ...
-	CHECKIFTHROWS( a_math_function(bad_argument), std::exception )
+    CHECKIFTHROWS( a_math_function(bad_argument), std::exception )
 }
 */
 
@@ -251,10 +251,10 @@ TEST_FUNCTION( error_handler_testing )
 
 #define CHECKIF( X ) {if(!(X)) UNITTEST_FAIL( #X ); }
 #define CHECKIFTHROWS( X,E ) {bool caught_expected=false; \
-	try {X;} \
-	catch(const E &e) {caught_expected=true;} \
-	if(!caught_expected) UNITTEST_FAIL( #X " should throw " #E ); \
-	}
+    try {X;} \
+    catch(const E &e) {caught_expected=true;} \
+    if(!caught_expected) UNITTEST_FAIL( #X " should throw " #E ); \
+    }
 
 
 // Declaration of support classes, types, and routines
@@ -262,16 +262,16 @@ namespace selftest {
 
 class selftest_error : public std::logic_error {
 public:
-	explicit selftest_error(const std::string& arg)
-		: logic_error(arg) {};
-	virtual ~selftest_error() noexcept {};
+    explicit selftest_error(const std::string& arg)
+        : logic_error(arg) {};
+    virtual ~selftest_error() noexcept {};
 };
 
 class over_reasonable_limit : public std::runtime_error {
 public:
-	explicit over_reasonable_limit(const std::string& arg)
-		: runtime_error(arg) {};
-	virtual ~over_reasonable_limit() noexcept {};
+    explicit over_reasonable_limit(const std::string& arg)
+        : runtime_error(arg) {};
+    virtual ~over_reasonable_limit() noexcept {};
 };
 
 class terminate_unittest {};
@@ -289,22 +289,22 @@ enum class failType {
 typedef void TestFunc();
 
 struct FailRatio {
-	int numFailedTests;
-	int numTests;
+    int numFailedTests;
+    int numTests;
 };
 
 template<int>
 class UnitTest {
 public:
-	UnitTest( TestFunc *tf, const char* tfName );
-	static FailRatio runUnitTestsImpl();
+    UnitTest( TestFunc *tf, const char* tfName );
+    static FailRatio runUnitTestsImpl();
 
 private:
-	bool callUnitTest();
+    bool callUnitTest();
 
-	TestFunc *testfunc_;
-	UnitTest *next_;
-	const char *tfname_;
+    TestFunc *testfunc_;
+    UnitTest *next_;
+    const char *tfname_;
 };
 
 
@@ -326,91 +326,91 @@ void thrower<0>(
     int lineNum )
 {
     #ifdef DEBUG
-		#ifdef TRACETHROWS
-        	const bool debugging = true;
-		#else
-        	const bool debugging = false;
-		#endif
+        #ifdef TRACETHROWS
+            const bool debugging = true;
+        #else
+            const bool debugging = false;
+        #endif
     #else
         const bool debugging = false;    
     #endif
     
-	/* Compose message texts:
-	<file>:<line>:0: error: <ft text> '<failedPredicate>' failed in <function>.
-	*/
-	std::string message;
-	if (fileName && lineNum) {
-		message = std::string(fileName) + ":" + 
+    /* Compose message texts:
+    <file>:<line>:0: error: <ft text> '<failedPredicate>' failed in <function>.
+    */
+    std::string message;
+    if (fileName && lineNum) {
+        message = std::string(fileName) + ":" + 
                 std::to_string(lineNum) + ":0: error: ";
     }
-	switch (ft) {
-	case failType::badarg:
-		message += "Argument test";
-		break;
-	case failType::badassert:
-		message += "Assertion";
-		break;
-	case failType::badselftest:
-		message += "Self test";
-		break;
-	case failType::badunittest:
-		message += "Unit test";
-		break;
-	case failType::overlimit:
-		message += "Reasonable limit";
-		break;
-	}
+    switch (ft) {
+    case failType::badarg:
+        message += "Argument test";
+        break;
+    case failType::badassert:
+        message += "Assertion";
+        break;
+    case failType::badselftest:
+        message += "Self test";
+        break;
+    case failType::badunittest:
+        message += "Unit test";
+        break;
+    case failType::overlimit:
+        message += "Reasonable limit";
+        break;
+    }
 
-	if (failedPredicate)
-		message += std::string(" '") + failedPredicate + "'";
-	message += " failed";
-	if (function)
-		message += std::string(" in ") + function;
-	message += '.';
+    if (failedPredicate)
+        message += std::string(" '") + failedPredicate + "'";
+    message += " failed";
+    if (function)
+        message += std::string(" in ") + function;
+    message += '.';
 
-	switch (ft) {
-	case failType::badarg:
+    switch (ft) {
+    case failType::badarg:
         if ( debugging ) {
-		    std::cerr << message << std::endl;
+            std::cerr << message << std::endl;
         }
-		throw std::invalid_argument(message);
-		break;
-	case failType::badassert:
+        throw std::invalid_argument(message);
+        break;
+    case failType::badassert:
         if ( debugging ) {
-		    std::cerr << message << std::endl;
+            std::cerr << message << std::endl;
         }
-		throw selftest::selftest_error(message);
-		break;
-	case failType::badselftest:
-		throw selftest::selftest_error(message);
-		break;
-	case failType::badunittest:
-		std::cerr << message << std::endl;
-		throw terminate_unittest();
-		break;
-	case failType::overlimit:
+        throw selftest::selftest_error(message);
+        break;
+    case failType::badselftest:
+        throw selftest::selftest_error(message);
+        break;
+    case failType::badunittest:
+        std::cerr << message << std::endl;
+        throw terminate_unittest();
+        break;
+    case failType::overlimit:
         if ( debugging ) {
-		    std::cerr << message << std::endl;
+            std::cerr << message << std::endl;
         }
-		throw selftest::over_reasonable_limit(message);
-		break;
-	}
+        throw selftest::over_reasonable_limit(message);
+        break;
+    }
 
-	return;
+    return;
 }
 
 
 template<>
 UnitTest<0>::UnitTest( TestFunc *tf, const char* tfName )
-	: testfunc_( tf ),
-	  tfname_( tfName )
+    : testfunc_( tf ),
+      tfname_( tfName )
 {
-	static UnitTest *head = nullptr;
-	next_ = head;
-	if (tf)
-		head = this;
-	else
-		head = nullptr;			// Last test registered, reset list
+    static UnitTest *head = nullptr;
+    next_ = head;
+    if (tf)
+        head = this;
+    else
+        head = nullptr;			// Last test registered, reset list
 }
 
 template<>
@@ -420,42 +420,42 @@ bool UnitTest<0>::callUnitTest()
     const int time_limit_seconds = 2;
     bool failedTest = false;
 
-	try {
-		auto testStart = std::chrono::high_resolution_clock::now();
+    try {
+        auto testStart = std::chrono::high_resolution_clock::now();
 
-		testfunc_();
+        testfunc_();
 
-		auto duration = std::chrono::high_resolution_clock::now()-testStart;
-		if ( duration > std::chrono::seconds(time_limit_seconds) ) {
-			std::cerr << "Unit test " << tfname_ << " not complete within "
-			     << time_limit_seconds << " seconds." << std::endl;
-			failedTest = true;
-		}
-		return failedTest;
-	}
+        auto duration = std::chrono::high_resolution_clock::now()-testStart;
+        if ( duration > std::chrono::seconds(time_limit_seconds) ) {
+            std::cerr << "Unit test " << tfname_ << " not complete within "
+                 << time_limit_seconds << " seconds." << std::endl;
+            failedTest = true;
+        }
+        return failedTest;
+    }
 
-	catch( const terminate_unittest& e ) {
-		// Message, already written
+    catch( const terminate_unittest& e ) {
+        // Message, already written
         failedTest = true;
-		return failedTest;
-	}
+        return failedTest;
+    }
 
-	catch( const char* e ) {
-		std::cerr << "Exception thrown during unit test '" << tfname_
-		     <<  "': \"" << e << "\"." << std::endl;
-	}
+    catch( const char* e ) {
+        std::cerr << "Exception thrown during unit test '" << tfname_
+             <<  "': \"" << e << "\"." << std::endl;
+    }
 
-	catch( const std::exception& e ) {
-		std::cerr << "Exception thrown during unit test '" << tfname_
-		     << "': " << e.what() << "." << std::endl;
-	}
+    catch( const std::exception& e ) {
+        std::cerr << "Exception thrown during unit test '" << tfname_
+             << "': " << e.what() << "." << std::endl;
+    }
 
-	catch( ... ) {
-		std::cerr << "Exception of unknown type thrown during unit test '"
-		     << tfname_ << "'." << std::endl;
-	}
+    catch( ... ) {
+        std::cerr << "Exception of unknown type thrown during unit test '"
+             << tfname_ << "'." << std::endl;
+    }
 
-	failedTest = true;
+    failedTest = true;
     return failedTest;
 }
 
@@ -463,36 +463,36 @@ template<>
 FailRatio UnitTest<0>::runUnitTestsImpl()
 {
     bool failedTest = false;
-	UnitTest lastTest( nullptr, "Tests complete" );
-	// Reverse list so that they are run in the order given
-	UnitTest *newHead = nullptr;
-	UnitTest *oldHead = lastTest.next_;
-	UnitTest *tptr = nullptr;
+    UnitTest lastTest( nullptr, "Tests complete" );
+    // Reverse list so that they are run in the order given
+    UnitTest *newHead = nullptr;
+    UnitTest *oldHead = lastTest.next_;
+    UnitTest *tptr = nullptr;
 
-	while (oldHead) {
-		// Unlink from old
-		tptr = oldHead;
-		oldHead = oldHead->next_;
-		// Link to end of new
-		tptr->next_ = newHead;
-		newHead = tptr;
-	}
+    while (oldHead) {
+        // Unlink from old
+        tptr = oldHead;
+        oldHead = oldHead->next_;
+        // Link to end of new
+        tptr->next_ = newHead;
+        newHead = tptr;
+    }
 
-	// Now call them
+    // Now call them
     // sttrace << "Starting unit tests...\n";
-	//runningUnitTests = true;
-	FailRatio rc {0,0};
-	while (newHead) {
-		failedTest = newHead->callUnitTest();
-		++rc.numTests;
-		if (failedTest) {
-			++rc.numFailedTests;
-		}
-		newHead = newHead->next_;
-	}
-	//runningUnitTests = false;
+    //runningUnitTests = true;
+    FailRatio rc {0,0};
+    while (newHead) {
+        failedTest = newHead->callUnitTest();
+        ++rc.numTests;
+        if (failedTest) {
+            ++rc.numFailedTests;
+        }
+        newHead = newHead->next_;
+    }
+    //runningUnitTests = false;
 
-	return rc;
+    return rc;
 }
 
 

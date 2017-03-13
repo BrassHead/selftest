@@ -71,9 +71,9 @@ int main( int argc, char *argv[] )
     trace << "Main started\n";
 
     #ifdef DEBUG
-	    auto fails = selftest::runUnitTests<0>();
+        auto fails = selftest::runUnitTests<0>();
         if ( fails.numFailedTests>0 ) {
-        	cerr << fails.numFailedTests 
+            cerr << fails.numFailedTests 
                  << "/" 
                  << fails.numTests 
                  << " unit tests failed"
