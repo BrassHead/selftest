@@ -8,6 +8,7 @@ IMPORTANT DISCLAIMERS.
 
 
 #define TRACING 1
+#define SELFTEST_IMPLEMENTATION
 #include "selftest.hpp"
 using selftest::trace;
 
@@ -71,7 +72,7 @@ int main( int argc, char *argv[] )
     trace << "Main started\n";
 
     #ifdef DEBUG
-        auto fails = selftest::runUnitTests<0>();
+        auto fails = selftest::runUnitTests();
         if ( fails.numFailedTests>0 ) {
             cerr << fails.numFailedTests 
                  << "/" 

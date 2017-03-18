@@ -45,6 +45,11 @@ These are several related facilities here:
 These facilities have options enabled or disabled by setting preprocessor 
 variables before the '#include "selftest.hpp"'
 
+The main such option is
+        #define SELFTEST_IMPLEMENTATION
+which should be defined in one file per program that includes this one. This
+would typically be the main program that starts the unit tests running. 
+
 
 Using selftest::trace
 ---------------------
@@ -204,10 +209,10 @@ TEST_FUNCTION( error_handler_testing )
 
     #ifdef OBFUSCATETESTS
         #define ASSERT( X ) {if(!(X)) \
-            {selftest::thrower<0>(selftest::failType::badassert, 0, 0, 0, 0);}}
+            {selftest::thrower(selftest::failType::badassert, 0, 0, 0, 0);}}
     #else
         #define ASSERT( X ) {if(!(X)) \
-            {selftest::thrower<0>( selftest::failType::badassert, \
+            {selftest::thrower( selftest::failType::badassert, \
                                 #X, __func__, __FILE__, __LINE__ );} }
     #endif
 
@@ -219,30 +224,30 @@ TEST_FUNCTION( error_handler_testing )
 // Macros THROWxxx
 #ifdef OBFUSCATETESTS
     #define BAD_ARG( X ) \
-            selftest::thrower<0>( selftest::failType::badarg, 0, 0, 0, 0 )
+            selftest::thrower( selftest::failType::badarg, 0, 0, 0, 0 )
     #define TEST_FAIL( X ) \
-            selftest::thrower<0>( selftest::failType::badselftest, 0, 0, 0, 0 )
+            selftest::thrower( selftest::failType::badselftest, 0, 0, 0, 0 )
     #define OVER_LIMIT( X ) \
-            selftest::thrower<0>( selftest::failType::overlimit, 0, 0, 0, 0 )
+            selftest::thrower( selftest::failType::overlimit, 0, 0, 0, 0 )
 #else
     #define BAD_ARG( X ) \
-            selftest::thrower<0>( selftest::failType::badarg, \
+            selftest::thrower( selftest::failType::badarg, \
                                X, __func__, __FILE__, __LINE__ )
     #define TEST_FAIL( X ) \
-            selftest::thrower<0>( selftest::failType::badselftest, \
+            selftest::thrower( selftest::failType::badselftest, \
                                X, __func__, __FILE__, __LINE__ )
     #define OVER_LIMIT( X ) \
-            selftest::thrower<0>( selftest::failType::overlimit, \
+            selftest::thrower( selftest::failType::overlimit, \
                                X, __func__, __FILE__, __LINE__ )
 #endif
 
 
 // Unit testing Macros
 #define TEST_FUNCTION( X ) selftest::TestFunc X; \
-                           selftest::UnitTest<0> unittester ## X ( X,#X ); \
+                           selftest::UnitTest unittester ## X ( X,#X ); \
                            void X()
 #define UNITTEST_FAIL( X ) \
-        selftest::thrower<0>( selftest::failType::badunittest, \
+        selftest::thrower( selftest::failType::badunittest, \
                               X, __func__, __FILE__, __LINE__ )
 
 #define CHECKIF( X ) {if(!(X)) UNITTEST_FAIL( #X ); }
@@ -258,16 +263,16 @@ namespace selftest {
 
 class selftest_error : public std::logic_error {
 public:
-    explicit selftest_error(const std::string& arg)
+    inline explicit selftest_error(const std::string& arg)
         : logic_error(arg) {};
-    virtual ~selftest_error() noexcept {};
+    inline virtual ~selftest_error() noexcept {};
 };
 
 class over_reasonable_limit : public std::runtime_error {
 public:
-    explicit over_reasonable_limit(const std::string& arg)
+    inline explicit over_reasonable_limit(const std::string& arg)
         : runtime_error(arg) {};
-    virtual ~over_reasonable_limit() noexcept {};
+    inline virtual ~over_reasonable_limit() noexcept {};
 };
 
 class terminate_unittest {};
@@ -289,7 +294,7 @@ struct FailRatio {
     int numTests;
 };
 
-template<int>
+
 class UnitTest {
 public:
     UnitTest( TestFunc *tf, const char* tfName );
@@ -304,7 +309,6 @@ private:
 };
 
 
-template<int>
 void thrower(
     const failType ft,
     const char* failedPredicate,
@@ -312,9 +316,12 @@ void thrower(
     const char* fileName,
     int lineNum );
 
+FailRatio runUnitTests();
 
-template<>
-void thrower<0>(
+
+#ifdef SELFTEST_IMPLEMENTATION
+
+void thrower(
     const failType ft,
     const char* failedPredicate,
     const char* function,
@@ -377,8 +384,7 @@ void thrower<0>(
 }
 
 
-template<>
-UnitTest<0>::UnitTest( TestFunc *tf, const char* tfName )
+UnitTest::UnitTest( TestFunc *tf, const char* tfName )
     : testfunc_( tf ),
       tfname_( tfName )
 {
@@ -390,8 +396,7 @@ UnitTest<0>::UnitTest( TestFunc *tf, const char* tfName )
         head = nullptr;			// Last test registered, reset list
 }
 
-template<>
-bool UnitTest<0>::callUnitTest()
+bool UnitTest::callUnitTest()
 {
     // Maximum duration for a single unit test
     const int time_limit_seconds = 2;
@@ -436,8 +441,7 @@ bool UnitTest<0>::callUnitTest()
     return failedTest;
 }
 
-template<>
-FailRatio UnitTest<0>::runUnitTestsImpl()
+FailRatio UnitTest::runUnitTestsImpl()
 {
     bool failedTest = false;
     UnitTest lastTest( nullptr, "Tests complete" );
@@ -473,15 +477,12 @@ FailRatio UnitTest<0>::runUnitTestsImpl()
 }
 
 
-template<int>
-FailRatio runUnitTests();
-
-template<>
-FailRatio runUnitTests<0>()
+FailRatio runUnitTests()
 {
-    return UnitTest<0>::runUnitTestsImpl();
+    return UnitTest::runUnitTestsImpl();
 }
 
+#endif      // SELFTEST_IMPLEMENTATION
 
 }	// namespace st
 

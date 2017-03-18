@@ -72,18 +72,3 @@ TEST_FUNCTION( fifth_and_final_intentional_failure )
 
 } // anon namespace
 
-
-int main( int argc, char *argv[] )
-{
-    trace << "Starting test sequence. "
-             "5 failures expected during this test.\n\n\n";
-    auto fails = selftest::runUnitTests<0>();
-
-    if ( 5==fails.numFailedTests ) {
-        trace << "\n\n\nTestception completed successfully\n";
-        return 0;
-    } else {
-        cerr << "\n\n\nUnit testing of selftest.hpp failed\n";
-        return 1;
-    }
-}
