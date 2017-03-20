@@ -160,6 +160,7 @@ TEST_FUNCTION( error_handler_testing )
 }
 */
 
+#include <stdexcept>
 #include <iostream>
 #include <chrono>
 #include <string>
