@@ -113,7 +113,7 @@ In unit test source files:
 
 It is expected that unit tests are in separate source files from regular code
 which are linked only if unit tests are to be run by the executable. Call
-        selftest::UnitTest::RunUnitTests() 
+        selftest::UnitTest::runUnitTests() 
 to invoke all of the registered unit test functions.
 
 A unit test source file consists of a sequence of routines mainly containing
@@ -139,7 +139,7 @@ file main.cc
 int main()
 {
     #ifdef DEBUG
-        auto fails = selftest::RunUnitTests();
+        auto fails = selftest::runUnitTests();
         trace << fails.numFailedTests << "/" << fails.numTests << " unit tests failed\n";
     #endif
 }
