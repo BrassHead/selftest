@@ -49,16 +49,17 @@ string fizzbuzz( int index ) {
 
 TEST_FUNCTION( FizzTests )
 {
-    CHECKIF( "2" == fizzbuzz( 2 ) );
+    CHECKSTREQ( "2",fizzbuzz( 2 ) );
     CHECKIF( "Fizz" == fizzbuzz( 33 ) );
 }
 
 TEST_FUNCTION( BuzzTests )
 {
     CHECKIF( "Buzz" == fizzbuzz( 55 ) );
-    CHECKIF( "Fizz Buzz" == fizzbuzz( 90 ) );
+    CHECKSTREQ( "Fizz Buzz",fizzbuzz( 90 ) );
     // uncomment below to see what happens with a failed test
     // CHECKIF( "99" == fizzbuzz( 99 ) );
+    // CHECKSTREQ( "99",fizzbuzz( 99 ) );
 }
 
 TEST_FUNCTION( FizzBuzzErrors )

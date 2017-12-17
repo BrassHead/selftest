@@ -43,9 +43,8 @@ TEST_FUNCTION( try_throws )
 
 TEST_FUNCTION( multiple_failures )
 {
-    bool first_intentional_failure = false;
     bool continues_after_failure = false;
-    CHECKIF( first_intentional_failure );
+    CHECKSTREQ( "first intentional","failure" );
     CHECKIF( continues_after_failure );	// Should not appear
 }
 

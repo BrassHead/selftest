@@ -38,6 +38,9 @@ These are several related facilities here:
                     macros to verify results.
     CHECKIF( predicate )
                     Tests that predicate is true
+    CHECKSTREQ( left, right )
+                    Tests that left==right. Left and right must be assignable to
+                    strings
     CHECKIFTHROWS( expr, except )
                     Checks that expression 'expr' throws an expected exception.
                     Used for unit testing error conditions
@@ -108,6 +111,8 @@ In unit test source files:
                     Registers and defines a unit test function.
     CHECKIF( predicate )
                     Prints a message on std::cerr if predicate is false.
+    CHECKSTREQ( left,right )
+                    Prints a message on std::cerr if left!=right.
     CHECKIFTHROWS( stmt, except )
                     Test fails if stmt does not throw expected exception type
 
@@ -117,7 +122,7 @@ which are linked only if unit tests are to be run by the executable. Call
 to invoke all of the registered unit test functions.
 
 A unit test source file consists of a sequence of routines mainly containing
-CHECKIF()'s. Each routine is defined by the macro TEST_FUNCTION(function). For
+CHECKxxx()'s. Each routine is defined by the macro TEST_FUNCTION(function). For
 example:
 
     #include "selftest.hpp"
@@ -252,6 +257,10 @@ TEST_FUNCTION( error_handler_testing )
                               X, __func__, __FILE__, __LINE__ )
 
 #define CHECKIF( X ) {if(!(X)) UNITTEST_FAIL( #X ); }
+#define CHECKSTREQ( L,R ) { std::string l=(L); std::string r=(R); if(l!=r) \
+    UNITTEST_FAIL( (#L " should equal " #R " but \"" + \
+        l + "\" is not \"" + r + "\"").c_str() );}
+//    UNITTEST_FAIL( (l + " not equal " + r).c_str() ); }
 #define CHECKIFTHROWS( X,E ) {bool caught_expected=false; \
     try {X;} \
     catch(const E &e) {caught_expected=true;} \
