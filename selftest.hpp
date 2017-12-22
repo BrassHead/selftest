@@ -258,9 +258,8 @@ TEST_FUNCTION( error_handler_testing )
 
 #define CHECKIF( X ) {if(!(X)) UNITTEST_FAIL( #X ); }
 #define CHECKSTREQ( L,R ) { std::string l=(L); std::string r=(R); if(l!=r) \
-    UNITTEST_FAIL( (#L " should equal " #R " but \"" + \
-        l + "\" is not \"" + r + "\"").c_str() );}
-//    UNITTEST_FAIL( (l + " not equal " + r).c_str() ); }
+    UNITTEST_FAIL( ("\n" #L " should equal\n" #R " but\n\"" + \
+        l + "\" is not\n\"" + r + "\"").c_str() );}
 #define CHECKIFTHROWS( X,E ) {bool caught_expected=false; \
     try {X;} \
     catch(const E &e) {caught_expected=true;} \
