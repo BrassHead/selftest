@@ -118,7 +118,7 @@ In unit test source files:
 
 It is expected that unit tests are in separate source files from regular code
 which are linked only if unit tests are to be run by the executable. Call
-        selftest::UnitTest::runUnitTests() 
+        selftest::runUnitTests() 
 to invoke all of the registered unit test functions.
 
 A unit test source file consists of a sequence of routines mainly containing
